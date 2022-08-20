@@ -11,5 +11,5 @@ class DisplayText():
         self.text_font = pygame.font.Font("model/square_font.ttf", text_size)
 
     def DrawText(self, screen):
-        text_tbd = self.text_font.render(self.text, True, (0, 0, 0))
+        text_tbd = self.text_font.render(self.text, True, self.color)
         screen.blit(text_tbd, (self.x, self.y))
