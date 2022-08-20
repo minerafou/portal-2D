@@ -17,7 +17,7 @@ class Button():
         self.text_size = text_size
 
         #set font
-        self.text_font = pygame.font.Font("model/square_font.ttf", self.text_size)
+        self.text_font = pygame.font.Font("model/square_font.ttf", text_size)
 
     def DrawButton (self, screen):
         #set le text

@@ -1,6 +1,7 @@
 #import pygame
 import pygame
 from model.button import Button
+from model.display_text import DisplayText
 
 #class jeu
 class Game():
@@ -15,9 +16,12 @@ class Game():
         self.screen_height = screen_height
 
         #button menu
-        self.menu_play_button = Button(200, 150, 800, 150, (180, 180, 180), (150, 150, 150), "Play", (0, 0, 0), 80)
-        self.menu_editor_button = Button(200, 325, 800, 150, (180, 180, 180), (150, 150, 150), "Level Editor", (0, 0, 0), 80)
-        self.menu_options_button = Button(200, 500, 800, 150, (180, 180, 180), (150, 150, 150), "Options", (0, 0, 0), 80)
+        self.menu_play_button = Button(200, 250, 800, 150, (180, 180, 180), (150, 150, 150), "Play", (0, 0, 0), 80)
+        self.menu_editor_button = Button(200, 425, 800, 150, (180, 180, 180), (150, 150, 150), "Level Editor", (0, 0, 0), 80)
+        self.menu_options_button = Button(200, 600, 800, 150, (180, 180, 180), (150, 150, 150), "Options", (0, 0, 0), 80)
+
+        #text menu
+        self.menu_game_name = DisplayText(20, 20, (0, 0, 0), "PORTAL 2D", 150)
 
         #game
         self.game_screen = "menu"
@@ -50,6 +54,9 @@ class Game():
         self.menu_play_button.DrawButton(self.screen)
         self.menu_editor_button.DrawButton(self.screen)
         self.menu_options_button.DrawButton(self.screen)
+
+        #draw text
+        self.menu_game_name.DrawText(self.screen)
 
     def Run(self):
         #boucle global du jeu
