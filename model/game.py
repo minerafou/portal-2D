@@ -2,6 +2,7 @@
 import pygame
 from model.button import Button
 from model.display_text import DisplayText
+from model.level import *
 
 #class jeu
 class Game():
@@ -27,6 +28,27 @@ class Game():
 
         #button playing scene
         self.playing_scene_back_button = Button(0, 0, 150, 80, (180, 180, 180), (150, 150, 150), "Back", (0, 0, 0), 40)
+
+        #button level selection
+        self.level_selection_back_button = Button(100, 650, 1000, 100, (180, 180, 180), (150, 150, 150), "Back", (0, 0, 0), 40)
+
+        self.level_selection_1 = Button(100, 200, 100, 100, (180, 180, 180), (150, 150, 150), "1", (0, 0, 0), 40)
+        self.level_selection_2 = Button(250, 200, 100, 100, (180, 180, 180), (150, 150, 150), "2", (0, 0, 0), 40)
+        self.level_selection_3 = Button(400, 200, 100, 100, (180, 180, 180), (150, 150, 150), "3", (0, 0, 0), 40)
+        self.level_selection_4 = Button(550, 200, 100, 100, (180, 180, 180), (150, 150, 150), "4", (0, 0, 0), 40)
+        self.level_selection_5 = Button(700, 200, 100, 100, (180, 180, 180), (150, 150, 150), "5", (0, 0, 0), 40)
+        self.level_selection_6 = Button(850, 200, 100, 100, (180, 180, 180), (150, 150, 150), "6", (0, 0, 0), 40)
+        self.level_selection_7 = Button(1000, 200, 100, 100, (180, 180, 180), (150, 150, 150), "7", (0, 0, 0), 40)
+        self.level_selection_8 = Button(100, 350, 100, 100, (180, 180, 180), (150, 150, 150), "8", (0, 0, 0), 40)
+        self.level_selection_9 = Button(250, 350, 100, 100, (180, 180, 180), (150, 150, 150), "9", (0, 0, 0), 40)
+        self.level_selection_10 = Button(400, 350, 100, 100, (180, 180, 180), (150, 150, 150), "10", (0, 0, 0), 40)
+        self.level_selection_11 = Button(550, 350, 100, 100, (180, 180, 180), (150, 150, 150), "11", (0, 0, 0), 40)
+        self.level_selection_12 = Button(700, 350, 100, 100, (180, 180, 180), (150, 150, 150), "12", (0, 0, 0), 40)
+        self.level_selection_13 = Button(850, 350, 100, 100, (180, 180, 180), (150, 150, 150), "13", (0, 0, 0), 40)
+        self.level_selection_14 = Button(1000, 350, 100, 100, (180, 180, 180), (150, 150, 150), "14", (0, 0, 0), 40)
+
+        #text for level selection
+        self.level_selection_text = DisplayText(150, 20, (0, 0, 0), "Select a level", 100)
 
         #game
         self.game_screen = "menu"
@@ -59,6 +81,12 @@ class Game():
             self.level_default.append("mur")
         for i in range(self.lvl_width):
             self.level_default.append("mur")
+        for i in range(310, 320):
+            self.level_default[i] = ("mur")
+    
+    def SetLevel(self, level_num):
+        level_default = GetLevel(1)
+        self.level = self.level_default.copy()
     
     def CheckEvent(self):
         #verifie les evenement pygame
@@ -80,18 +108,16 @@ class Game():
                 if event.button == 1:
                     #left
                     #check des buttons
-                    self.CheckButton()
                     if self.game_screen == "playing scene":
                         self.SendPortal("blue")
+                    
+                    self.CheckButton()
 
                 elif event.button == 3:
                     #right
                     if self.game_screen == "playing scene":
                         self.SendPortal("orange")
 
-                
-
-            
             #check input clavier
             if self.game_screen == "playing scene":
                 if event.type == pygame.KEYDOWN:
@@ -114,11 +140,15 @@ class Game():
         #delete tous sur l'ecran
         self.screen.fill((220, 220, 220))
 
-        if self.game_screen == "menu":
+        
+        if self.game_screen == "playing scene":
+            self.UpdatePlayingScene()
+        
+        elif self.game_screen == "menu":
             self.UpdateMenu()
 
-        elif self.game_screen == "playing scene":
-            self.UpdatePlayingScene()
+        elif self.game_screen == "level selection":
+            self.UpdateLevelSelection()
 
     def Run(self):
         #boucle global du jeu
@@ -153,12 +183,34 @@ class Game():
 
         #draw portals
         self.DrawPortals()
+    
+    def UpdateLevelSelection(self):
+        #draw button
+        self.level_selection_back_button.DrawButton(self.screen)
+
+        self.level_selection_1.DrawButton(self.screen)
+        self.level_selection_2.DrawButton(self.screen)
+        self.level_selection_3.DrawButton(self.screen)
+        self.level_selection_4.DrawButton(self.screen)
+        self.level_selection_5.DrawButton(self.screen)
+        self.level_selection_6.DrawButton(self.screen)
+        self.level_selection_7.DrawButton(self.screen)
+        self.level_selection_8.DrawButton(self.screen)
+        self.level_selection_9.DrawButton(self.screen)
+        self.level_selection_10.DrawButton(self.screen)
+        self.level_selection_11.DrawButton(self.screen)
+        self.level_selection_12.DrawButton(self.screen)
+        self.level_selection_13.DrawButton(self.screen)
+        self.level_selection_14.DrawButton(self.screen)
+
+        #draw text
+        self.level_selection_text.DrawText(self.screen)
 
     def CheckButton(self):
         #for menu screen
         if self.game_screen == "menu":
             if self.menu_play_button.IsPressed():
-                self.game_screen = "playing scene"
+                self.game_screen = "level selection"
             elif self.menu_editor_button.IsPressed():
                 pass
             elif self.menu_options_button.IsPressed():
@@ -169,7 +221,42 @@ class Game():
         #for playing screen
         elif self.game_screen == "playing scene":
             if self.playing_scene_back_button.IsPressed():
+                self.game_screen = "level selection"
+        
+        #for level selection
+        elif self.game_screen == "level selection":
+            if self.level_selection_back_button.IsPressed():
                 self.game_screen = "menu"
+            elif self.level_selection_1.IsPressed():
+                self.SetLevel(1)
+                self.game_screen = "playing scene"
+            elif self.level_selection_2.IsPressed():
+                pass
+            elif self.level_selection_3.IsPressed():
+                pass
+            elif self.level_selection_4.IsPressed():
+                pass
+            elif self.level_selection_5.IsPressed():
+                pass
+            elif self.level_selection_6.IsPressed():
+                pass
+            elif self.level_selection_7.IsPressed():
+                pass
+            elif self.level_selection_8.IsPressed():
+                pass
+            elif self.level_selection_9.IsPressed():
+                pass
+            elif self.level_selection_10.IsPressed():
+                pass
+            elif self.level_selection_11.IsPressed():
+                pass
+            elif self.level_selection_12.IsPressed():
+                pass
+            elif self.level_selection_13.IsPressed():
+                pass
+            elif self.level_selection_14.IsPressed():
+                pass
+        
     
     def DrawLevel(self):
         for i in range(self.lvl_width * self.lvl_height):

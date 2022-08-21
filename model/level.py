@@ -1,0 +1,2 @@
+def GetLevel(num):
+    pass
