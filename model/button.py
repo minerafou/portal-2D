@@ -15,7 +15,6 @@ class Button():
         self.text = text
         self.text_color = text_color
         self.text_size = text_size
-        self.id = id
 
         #set font
         self.text_font = pygame.font.Font("model/square_font.ttf", text_size)
