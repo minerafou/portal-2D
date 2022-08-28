@@ -1,4 +1,5 @@
 #import pygame
+from ast import Continue
 import pygame
 from model.button import Button
 from model.display_text import DisplayText
@@ -50,9 +51,16 @@ class Game():
         #text for level selection
         self.level_selection_text = DisplayText(150, 20, (0, 0, 0), "Select a level", 100)
 
+        #text win screen
+        self.win_screen_title = DisplayText(70, 10, (0, 0, 0), "You win", 200)
+        self.win_screen_subtitle = DisplayText(260, 250, (120, 120, 120), "Well played", 80)
+
+        #button win screen
+        self.win_screen_next = Button(650, 500, 450, 200, (180, 180, 180), (150, 150, 150), "Next", (0, 0, 0), 120)
+        self.win_screen_back = Button(100, 500, 450, 200, (180, 180, 180), (150, 150, 150), "Back", (0, 0, 0), 120)
+
         #game
         self.game_screen = "menu"
-        self.level_default = []
         self.player_position_x = 2
         self.player_position_y = 2
         self.lvl_width = 30
@@ -61,34 +69,38 @@ class Game():
         self.tile_height = 40
         self.portal_orange = [0, 0, 0]
         self.portal_blue = [0, 0, 0]
+        self.level_number = 0
 
         #running variable
         self.running = True
 
         #set a default level
-        self.CreateLevel()
+        self.level_default = GetLevel(1)
 
         #copy pour les modif
         self.level = self.level_default.copy()
-
-    def CreateLevel(self):
-        for i in range(self.lvl_width):
-            self.level_default.append("mur")
-        for i in range(self.lvl_height -2):
-            self.level_default.append("mur")
-            for i in range(self.lvl_width - 2):
-                self.level_default.append("air")
-            self.level_default.append("mur")
-        for i in range(self.lvl_width):
-            self.level_default.append("mur")
-        for i in range(310, 320):
-            self.level_default[i] = ("mur")
     
     def SetLevel(self, level_num):
-        level_default = GetLevel(1)
-        self.level = self.level_default.copy()
+        self.level_number = level_num
+        self.ResetPortal()
+        player_index = self.level.index("ply")
+        print(player_index)
+        self.player_position_x = player_index % self.lvl_width
+        self.player_position_y = player_index // self.lvl_width
+        return GetLevel(level_num)
     
     def CheckEvent(self):
+
+        #check la win
+        if self.game_screen == "playing scene":
+            if self.level[self.player_position_x + (self.player_position_y * self.lvl_width)] == "fin":
+                self.game_screen = "win screen"
+
+        #check res portal
+        if self.game_screen == "playing scene":
+            if self.level[self.player_position_x + (self.player_position_y * self.lvl_width)] == "res":
+                self.ResetPortal()
+
         #verifie les evenement pygame
         for event in pygame.event.get():
 
@@ -102,7 +114,6 @@ class Game():
                 self.EveryTenMilliSecAction()
             
             #input de la souris
-            #if event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFT:
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
@@ -130,8 +141,6 @@ class Game():
                     if event.key == pygame.K_d:
                         self.MovePlayer("right")
 
-            
-
     def Refresh(self):
         #refresh l'ecran
         pygame.display.flip()
@@ -149,6 +158,9 @@ class Game():
 
         elif self.game_screen == "level selection":
             self.UpdateLevelSelection()
+
+        elif self.game_screen == "win screen":
+            self.UpdateWinScreen()
 
     def Run(self):
         #boucle global du jeu
@@ -206,6 +218,15 @@ class Game():
         #draw text
         self.level_selection_text.DrawText(self.screen)
 
+    def UpdateWinScreen(self):
+        #draw button
+        self.win_screen_next.DrawButton(self.screen)
+        self.win_screen_back.DrawButton(self.screen)
+
+        #draw text
+        self.win_screen_title.DrawText(self.screen)
+        self.win_screen_subtitle.DrawText(self.screen)
+
     def CheckButton(self):
         #for menu screen
         if self.game_screen == "menu":
@@ -222,42 +243,64 @@ class Game():
         elif self.game_screen == "playing scene":
             if self.playing_scene_back_button.IsPressed():
                 self.game_screen = "level selection"
+            
+        #for win screen
+        elif self.game_screen == "win screen":
+            if self.win_screen_back.IsPressed():
+                self.game_screen = "level selection"
+            elif self.win_screen_next.IsPressed():
+                self.level = self.SetLevel(self.level_number + 1)
+                self.game_screen = "playing scene"
         
         #for level selection
         elif self.game_screen == "level selection":
             if self.level_selection_back_button.IsPressed():
                 self.game_screen = "menu"
+            
+
             elif self.level_selection_1.IsPressed():
-                self.SetLevel(1)
+                self.level = self.SetLevel(1)
                 self.game_screen = "playing scene"
             elif self.level_selection_2.IsPressed():
-                pass
+                self.level = self.SetLevel(2)
+                self.game_screen = "playing scene"
             elif self.level_selection_3.IsPressed():
-                pass
+                self.level = self.SetLevel(3)
+                self.game_screen = "playing scene"
             elif self.level_selection_4.IsPressed():
-                pass
+                self.level = self.SetLevel(4)
+                self.game_screen = "playing scene"
             elif self.level_selection_5.IsPressed():
-                pass
+                self.level = self.SetLevel(5)
+                self.game_screen = "playing scene"
             elif self.level_selection_6.IsPressed():
-                pass
+                self.level = self.SetLevel(6)
+                self.game_screen = "playing scene"
             elif self.level_selection_7.IsPressed():
-                pass
+                self.level = self.SetLevel(7)
+                self.game_screen = "playing scene"
             elif self.level_selection_8.IsPressed():
-                pass
+                self.level = self.SetLevel(8)
+                self.game_screen = "playing scene"
             elif self.level_selection_9.IsPressed():
-                pass
+                self.level = self.SetLevel(9)
+                self.game_screen = "playing scene"
             elif self.level_selection_10.IsPressed():
-                pass
+                self.level = self.SetLevel(10)
+                self.game_screen = "playing scene"
             elif self.level_selection_11.IsPressed():
-                pass
+                self.level = self.SetLevel(11)
+                self.game_screen = "playing scene"
             elif self.level_selection_12.IsPressed():
-                pass
+                self.level = self.SetLevel(12)
+                self.game_screen = "playing scene"
             elif self.level_selection_13.IsPressed():
-                pass
+                self.level = self.SetLevel(13)
+                self.game_screen = "playing scene"
             elif self.level_selection_14.IsPressed():
-                pass
-        
-    
+                self.level = self.SetLevel(14)
+                self.game_screen = "playing scene"
+         
     def DrawLevel(self):
         for i in range(self.lvl_width * self.lvl_height):
             tile_x = ((i % self.lvl_width) * self.tile_width)
@@ -267,10 +310,14 @@ class Game():
                 pygame.draw.rect(self.screen, (120, 120, 120), tile_rect)
             elif self.level[i] == "air":
                 pygame.draw.rect(self.screen, (220, 220, 220), tile_rect)
-            elif self.level[i] == "portal orange":
-                pygame.draw.rect(self.screen, (235, 132, 29), tile_rect)
-            elif self.level[i] == "portal blue":
-                pygame.draw.rect(self.screen, (32, 111, 247), tile_rect)
+            elif self.level[i] == "ply":
+                pygame.draw.rect(self.screen, (220, 220, 220), tile_rect)
+            elif self.level[i] == "fin":
+                pygame.draw.rect(self.screen, (220, 220, 0), tile_rect)
+            elif self.level[i] == "lav":
+                pygame.draw.rect(self.screen, (255, 77, 0), tile_rect)
+            elif self.level[i] == "res":
+                pygame.draw.rect(self.screen, (95, 191, 224), tile_rect)
 
     def DrawPlayer(self):
         player_rect = pygame.Rect(self.player_position_x * self.tile_width, (self.player_position_y * self.tile_height) + 80, self.tile_width, self.tile_height)
@@ -310,31 +357,49 @@ class Game():
         elif direction == "right":
             test_x += 1
         
-        if test_x == self.portal_blue[0] and test_y == self.portal_blue[1]:
-            self.TpToOrange()
-            return False
-        elif test_x == self.portal_orange[0] and test_y == self.portal_orange[1]:
-            self.TpToBlue()
-            return False
+        if test_x == self.portal_blue[0] and test_y == self.portal_blue[1] and self.portal_blue[2] == self.InvertDir(direction):
+            if self.portal_orange[0] != 0 or self.portal_orange[1] != 0 or self.portal_orange[2] != 0:
+                self.TpToOrange()
+                return False
+        elif test_x == self.portal_orange[0] and test_y == self.portal_orange[1] and self.portal_orange[2] == self.InvertDir(direction):
+            if self.portal_blue[0] != 0 or self.portal_blue[1] != 0 or self.portal_blue[2] != 0:
+                self.TpToBlue()
+                return False
         elif self.level[test_x + (test_y * self.lvl_width)] == "mur":
+            return False
+        elif self.level[test_x + (test_y * self.lvl_width)] == "lav":
             return False
         else:
             return True
+
+    def InvertDir(self, direction):
+        if direction == "up":
+            return "down"
+        elif direction == "down":
+            return "up"
+        elif direction == "left":
+            return "right"
+        elif direction == "right":
+            return "left"
     
     def SendPortal(self, portal_color):
 
         mouse_direction = self.FindMouseDirection()
         x, y, portal_direction = self.SearchWall(mouse_direction)
+        if x == 0 and y == 0 and portal_direction == 0:
+            pass
 
-        if portal_color == "orange":
-            self.portal_orange = [x, y, portal_direction]
-        if portal_color == "blue":
-            self.portal_blue = [x, y, portal_direction]
+        elif portal_color == "orange":
+            if self.portal_blue[0] != x or self.portal_blue[1] != y or self.portal_blue[2] != portal_direction:
+                self.portal_orange = [x, y, portal_direction]
+        elif portal_color == "blue":
+            if self.portal_orange[0] != x or self.portal_orange[1] != y or self.portal_orange[2] != portal_direction:
+                self.portal_blue = [x, y, portal_direction]
 
     def SearchWall(self, direction):
         test_x = self.player_position_x
         test_y = self.player_position_y
-        while self.level[test_x + test_y * self.lvl_width] == "air":
+        while self.level[test_x + test_y * self.lvl_width] == "air" or self.level[test_x + test_y * self.lvl_width] == "lav" or self.level[test_x + test_y * self.lvl_width] == "ply" or self.level[test_x + test_y * self.lvl_width] == "fin":
             if direction == "up":
                 test_y -= 1
             if direction == "down":
@@ -343,14 +408,11 @@ class Game():
                 test_x -= 1
             if direction == "right":
                 test_x += 1
-        if direction == "up":
-            portal_direction = "down"
-        if direction == "down":
-            portal_direction = "up"
-        if direction == "left":
-            portal_direction = "right"
-        if direction == "right":
-            portal_direction = "left"
+            if self.level[test_x + test_y * self.lvl_width] == "res":
+                return 0, 0, 0
+
+        portal_direction = self.InvertDir(direction)
+
         return test_x, test_y, portal_direction
 
     def FindMouseDirection(self):
@@ -420,5 +482,10 @@ class Game():
             self.player_position_x -= 1
         if self.portal_blue[2] == "right":
             self.player_position_x += 1
+        
+    def ResetPortal(self):
+        self.portal_orange = [0, 0, 0]
+        self.portal_blue = [0, 0, 0]
+    
 
 
