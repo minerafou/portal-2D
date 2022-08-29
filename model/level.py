@@ -1,11 +1,11 @@
 def GetLevel(num):
     if num == 1:
         return ['mur', 'mur', 'mur', 'mur', 'mur', 'mur', 'mur', 'mur', 'mur', 'mur', 'mur', 'mur', 'mur', 'mur', 'mur', 'mur', 'mur', 'mur', 'mur', 'mur', 'mur', 'mur', 'mur', 'mur', 'mur', 'mur', 'mur', 'mur', 'mur', 'mur',
-                'mur', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'lav', 'lav', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'mur', 
+                'mur', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'lav', 'lav', 'air', 'air', 'air', 'mlu', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'mur', 
                 'mur', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'lav', 'lav', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'mur',
                 'mur', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'lav', 'lav', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'mur', 
-                'mur', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'lav', 'lav', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'mur', 
-                'mur', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'lav', 'lav', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'mur', 
+                'mur', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'lav', 'lav', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'mlu', 'air', 'air', 'air', 'air', 'air', 'air', 'mur', 
+                'mur', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'lav', 'lav', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'mld', 'air', 'air', 'air', 'air', 'air', 'air', 'mur', 
                 'mur', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'lav', 'lav', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'mur', 
                 'mur', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'lav', 'lav', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'mur', 
                 'mur', 'air', 'air', 'ply', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'lav', 'lav', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'air', 'mur', 

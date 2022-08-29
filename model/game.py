@@ -84,7 +84,6 @@ class Game():
         self.level_number = level_num
         self.ResetPortal()
         player_index = self.level.index("ply")
-        print(player_index)
         self.player_position_x = player_index % self.lvl_width
         self.player_position_y = player_index // self.lvl_width
         return GetLevel(level_num)
@@ -306,6 +305,10 @@ class Game():
             tile_x = ((i % self.lvl_width) * self.tile_width)
             tile_y = ((i // self.lvl_width) * self.tile_height) + 80
             tile_rect = pygame.Rect(tile_x, tile_y, self.tile_width, self.tile_height)
+            mlu_points = [(tile_x + 30, tile_y + 1), (tile_x + 38, tile_y + 1), (tile_x + 38, tile_y + 10),
+                          (tile_x + 10, tile_y + 38), (tile_x + 1, tile_y + 38), (tile_x + 1, tile_y + 30)]
+            mld_points = [(tile_x + 1, tile_y + 1), (tile_x + 10, tile_y + 1), (tile_x + 38, tile_y + 29),
+                          (tile_x + 38, tile_y + 38), (tile_x + 29, tile_y + 38), (tile_x + 1, tile_y + 10)]
             if self.level[i] == "mur":
                 pygame.draw.rect(self.screen, (120, 120, 120), tile_rect)
             elif self.level[i] == "air":
@@ -318,6 +321,12 @@ class Game():
                 pygame.draw.rect(self.screen, (255, 77, 0), tile_rect)
             elif self.level[i] == "res":
                 pygame.draw.rect(self.screen, (95, 191, 224), tile_rect)
+            elif self.level[i] == "mlu":
+                pygame.draw.lines(self.screen, (0, 0, 0), 1, mlu_points, 3)
+                pygame.draw.line(self.screen, (0, 0, 0), (tile_x , tile_y + 39), (tile_x + 39, tile_y), 2)
+            elif self.level[i] == "mld":
+                pygame.draw.lines(self.screen, (0, 0, 0), 1, mld_points, 3)
+                pygame.draw.line(self.screen, (0, 0, 0), (tile_x, tile_y), (tile_x + 39, tile_y + 39), 2)
 
     def DrawPlayer(self):
         player_rect = pygame.Rect(self.player_position_x * self.tile_width, (self.player_position_y * self.tile_height) + 80, self.tile_width, self.tile_height)
@@ -369,6 +378,10 @@ class Game():
             return False
         elif self.level[test_x + (test_y * self.lvl_width)] == "lav":
             return False
+        elif self.level[test_x + (test_y * self.lvl_width)] == "mlu":
+            return False
+        elif self.level[test_x + (test_y * self.lvl_width)] == "mld":
+            return False
         else:
             return True
 
@@ -399,7 +412,7 @@ class Game():
     def SearchWall(self, direction):
         test_x = self.player_position_x
         test_y = self.player_position_y
-        while self.level[test_x + test_y * self.lvl_width] == "air" or self.level[test_x + test_y * self.lvl_width] == "lav" or self.level[test_x + test_y * self.lvl_width] == "ply" or self.level[test_x + test_y * self.lvl_width] == "fin":
+        while self.level[test_x + test_y * self.lvl_width] == "air" or self.level[test_x + test_y * self.lvl_width] == "lav" or self.level[test_x + test_y * self.lvl_width] == "ply" or self.level[test_x + test_y * self.lvl_width] == "fin"or self.level[test_x + test_y * self.lvl_width] == "mlu" or self.level[test_x + test_y * self.lvl_width] == "mld":
             if direction == "up":
                 test_y -= 1
             if direction == "down":
@@ -410,6 +423,24 @@ class Game():
                 test_x += 1
             if self.level[test_x + test_y * self.lvl_width] == "res":
                 return 0, 0, 0
+            if self.level[test_x + test_y * self.lvl_width] == "mld":
+                if direction == "up":
+                    direction = "left"
+                elif direction == "down":
+                    direction = "right"
+                elif direction == "left":
+                    direction = "up"
+                elif direction == "right":
+                    direction = "down"
+            if self.level[test_x + test_y * self.lvl_width] == "mlu":
+                if direction == "up":
+                    direction = "right"
+                elif direction == "down":
+                    direction = "left"
+                elif direction == "left":
+                    direction = "down"
+                elif direction == "right":
+                    direction = "up"
 
         portal_direction = self.InvertDir(direction)
 
