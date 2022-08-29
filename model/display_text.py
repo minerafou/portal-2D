@@ -13,3 +13,6 @@ class DisplayText():
     def DrawText(self, screen):
         text_tbd = self.text_font.render(self.text, True, self.color)
         screen.blit(text_tbd, (self.x, self.y))
+    
+    def SetText(self, text):
+        self.text = text

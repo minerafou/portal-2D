@@ -50,6 +50,4 @@ def CreateLevel(lvl_width, lvl_height):
             level_default.append("mur")
         for i in range(lvl_width):
             level_default.append("mur")
-        for i in range(310, 320):
-            level_default[i] = ("mur")
         return level_default
