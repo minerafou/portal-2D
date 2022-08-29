@@ -81,12 +81,7 @@ class ButtonEditor():
             pygame.draw.rect(self.screen, (180, 180, 180), tile_rect)
             tile_rect = pygame.Rect(tile_x + 2, tile_y + 2, self.tile_width - 4, self.tile_height - 4)
             pygame.draw.rect(self.screen, (220, 220, 220), tile_rect)
-
-        elif self.block == "ply":
-            pygame.draw.rect(self.screen, (180, 180, 180), tile_rect)
-            tile_rect = pygame.Rect(tile_x + 2, tile_y + 2, self.tile_width - 4, self.tile_height - 4)
-            pygame.draw.rect(self.screen, (220, 220, 220), tile_rect)
-
+            
         elif self.block == "fin":
             pygame.draw.rect(self.screen, (180, 180, 180), tile_rect)
             tile_rect = pygame.Rect(tile_x + 2, tile_y + 2, self.tile_width - 4, self.tile_height - 4)

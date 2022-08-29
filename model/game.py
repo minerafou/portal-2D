@@ -1,6 +1,6 @@
 #import pygame
-from turtle import width
 import pygame
+import pyperclip
 from model.button import Button, ButtonEditor
 from model.display_text import DisplayText
 from model.level import *
@@ -13,6 +13,7 @@ class Game():
 
         #set les varioble
         #screen
+        pyperclip.copy('The text to be copied to the clipboard.')
         self.screen = screen
         self.screen_width = screen_width
         self.screen_height = screen_height
@@ -28,7 +29,7 @@ class Game():
         self.menu_game_name2 = DisplayText(850, 20, (235, 132, 29), "2D", 150)
 
         #button playing scene
-        self.playing_scene_back_button = Button(0, 0, 150, 80, (180, 180, 180), (150, 150, 150), "Back", (0, 0, 0), 45)
+        self.playing_scene_back_button = Button(0, 0, 200, 80, (180, 180, 180), (150, 150, 150), "Back", (0, 0, 0), 40)
 
         #button level selection
         self.level_selection_back_button = Button(100, 650, 1000, 100, (180, 180, 180), (150, 150, 150), "Back", (0, 0, 0), 40)
@@ -49,8 +50,8 @@ class Game():
         self.level_selection_14 = Button(1000, 350, 100, 100, (180, 180, 180), (150, 150, 150), "14", (0, 0, 0), 40)
 
         #text playing scene
-        self.playing_scene_level = DisplayText(170, 10, (0, 0, 0), "None (le text et modif apres)", 50)
-        self.playing_scene_time = DisplayText(500, 10, (0, 0, 0), "None (le text et modif apres)", 50)
+        self.playing_scene_level = DisplayText(230, 10, (0, 0, 0), "None (le text et modif apres)", 50)
+        self.playing_scene_time = DisplayText(550, 10, (0, 0, 0), "None (le text et modif apres)", 50)
 
         #text for level selection
         self.level_selection_text = DisplayText(150, 20, (0, 0, 0), "Select a level", 100)
@@ -63,18 +64,24 @@ class Game():
         self.win_screen_next = Button(650, 500, 450, 200, (180, 180, 180), (150, 150, 150), "Next", (0, 0, 0), 120)
         self.win_screen_back = Button(100, 500, 450, 200, (180, 180, 180), (150, 150, 150), "Back", (0, 0, 0), 120)
 
-        #button editor
-        self.editor_mur_button = ButtonEditor(170, 20, 40, 40, "mur")
-        self.editor_lav_button = ButtonEditor(230, 20, 40, 40, "lav")
-        self.editor_res_button = ButtonEditor(290, 20, 40, 40, "res")
-        self.editor_mlu_button = ButtonEditor(350, 20, 40, 40, "mlu")
-        self.editor_mld_button = ButtonEditor(410, 20, 40, 40, "mld")
-        self.editor_owu_button = ButtonEditor(470, 20, 40, 40, "owu")
-        self.editor_owd_button = ButtonEditor(530, 20, 40, 40, "owd")
-        self.editor_owl_button = ButtonEditor(590, 20, 40, 40, "owl")
-        self.editor_owr_button = ButtonEditor(650, 20, 40, 40, "owr")
-        self.editor_fin_button = ButtonEditor(710, 20, 40, 40, "fin")
-        self.editor_ply_button = ButtonEditor(770, 20, 40, 40, "ply")
+        #button editor (and for playing scene for the fisrt)
+        self.editor_playing_scene_help = Button(1120, 0, 80, 80, (180, 180, 180), (150, 150, 150), "?", (0, 0, 0), 40)
+        self.editor_play = Button(970, 0, 150, 80, (180, 180, 180), (150, 150, 150), "play", (0, 0, 0), 40)
+
+        self.editor_mur_button = ButtonEditor(220, 20, 40, 40, "mur")
+        self.editor_lav_button = ButtonEditor(280, 20, 40, 40, "lav")
+        self.editor_res_button = ButtonEditor(340, 20, 40, 40, "res")
+        self.editor_mlu_button = ButtonEditor(400, 20, 40, 40, "mlu")
+        self.editor_mld_button = ButtonEditor(460, 20, 40, 40, "mld")
+        self.editor_owu_button = ButtonEditor(520, 20, 40, 40, "owu")
+        self.editor_owd_button = ButtonEditor(580, 20, 40, 40, "owd")
+        self.editor_owl_button = ButtonEditor(640, 20, 40, 40, "owl")
+        self.editor_owr_button = ButtonEditor(700, 20, 40, 40, "owr")
+        self.editor_fin_button = ButtonEditor(760, 20, 40, 40, "fin")
+        self.editor_ply_button = ButtonEditor(820, 20, 40, 40, "ply")
+
+        #vadil level text
+        self.valid_level_text = DisplayText(220, 18, (0, 0, 0), "Please finish you're level", 40)
 
         #game
         self.game_screen = "menu"
@@ -117,6 +124,11 @@ class Game():
         if self.game_screen == "playing scene":
             if self.level[self.player_position_x + (self.player_position_y * self.lvl_width)] == "fin":
                 self.game_screen = "win screen"
+            
+        if self.game_screen == "valid level":
+            if self.level[self.player_position_x + (self.player_position_y * self.lvl_width)] == "fin":
+                pyperclip.copy(str(self.level))
+                self.game_screen = "valid screen"
 
         #check res portal
         if self.game_screen == "playing scene":
@@ -141,7 +153,7 @@ class Game():
                 if event.button == 1:
                     #left
                     #check des buttons
-                    if self.game_screen == "playing scene":
+                    if self.game_screen == "playing scene" or self.game_screen == "valid level":
                         self.SendPortal("blue")
                     elif self.game_screen == "editor":
                         self.PosBlock()
@@ -150,13 +162,13 @@ class Game():
 
                 elif event.button == 3:
                     #right
-                    if self.game_screen == "playing scene":
+                    if self.game_screen == "playing scene" or self.game_screen == "valid level":
                         self.SendPortal("orange")
                     elif self.game_screen == "editor":
                         self.DelBlock()
 
             #check input clavier
-            if self.game_screen == "playing scene":
+            if self.game_screen == "playing scene" or self.game_screen == "valid level":
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_z:
                         self.MovePlayer("up")
@@ -191,6 +203,18 @@ class Game():
         elif self.game_screen == "editor":
             self.UpdateEditor()
 
+        elif self.game_screen == "editor help":
+            self.UpdateEditorHelp()
+        
+        elif self.game_screen == "play help":
+            self.UpdatePlayHelp()
+
+        elif self.game_screen == "valid level":
+            self.UpdateValidLevel()
+
+        elif self.game_screen == "valid screen":
+            self.UpdateValidScreen()
+
     def Run(self):
         #boucle global du jeu
         while self.running:
@@ -224,6 +248,7 @@ class Game():
         
         #draw button
         self.playing_scene_back_button.DrawButton(self.screen)
+        self.editor_playing_scene_help.DrawButton(self.screen)
 
         #draw level
         self.DrawLevel()
@@ -281,6 +306,9 @@ class Game():
         self.editor_fin_button.DrawButton(self.screen)
         self.editor_ply_button.DrawButton(self.screen)
 
+        self.editor_playing_scene_help.DrawButton(self.screen)
+        self.editor_play.DrawButton(self.screen)
+
         #draw level
         self.DrawLevel()
 
@@ -290,6 +318,35 @@ class Game():
         #draw player
         if "ply" in self.level:
             self.DrawPlayer()
+
+    def UpdatePlayHelp(self):
+        #draw button
+        self.level_selection_back_button.DrawButton(self.screen)
+
+    def UpdateEditorHelp(self):
+        #draw button
+        self.level_selection_back_button.DrawButton(self.screen)
+
+    def UpdateValidLevel(self):
+
+        #draw button
+        self.playing_scene_back_button.DrawButton(self.screen)
+
+        #draw text
+        self.valid_level_text.DrawText(self.screen)
+
+        #draw level
+        self.DrawLevel()
+
+        #draw player
+        self.DrawPlayer()
+
+        #draw portals
+        self.DrawPortals()
+
+    def UpdateValidScreen(self):
+        #draw button
+        self.level_selection_back_button.DrawButton(self.screen)
 
     def CheckButton(self):
         #for menu screen
@@ -310,6 +367,8 @@ class Game():
         elif self.game_screen == "playing scene":
             if self.playing_scene_back_button.IsPressed():
                 self.game_screen = "level selection"
+            elif self.editor_playing_scene_help.IsPressed():
+                self.game_screen = "play help"
             
         #for win screen
         elif self.game_screen == "win screen":
@@ -319,10 +378,39 @@ class Game():
                 self.level = self.SetLevel(self.level_number + 1)
                 self.game_screen = "playing scene"
         
+        #for help editor
+        elif self.game_screen == "editor help":
+            if self.level_selection_back_button.IsPressed():
+                self.game_screen = "editor"
+        
+        #for help play
+        elif self.game_screen == "play help":
+            if self.level_selection_back_button.IsPressed():
+                self.game_screen = "playing scene"
+            
+        #for valid level
+        elif self.game_screen == "valid level":
+            if self.playing_scene_back_button.IsPressed():
+                self.game_screen = "editor"
+
+        #for valid screen
+        elif self.game_screen == "valid screen":
+            if self.level_selection_back_button.IsPressed():
+                self.game_screen = "editor"
+
         #for editor
         elif self.game_screen == "editor":
             if self.playing_scene_back_button.IsPressed():
                 self.game_screen = "menu"
+            elif self.editor_playing_scene_help.IsPressed():
+                self.game_screen = "editor help"
+            elif self.editor_play.IsPressed():
+                #check if player is in the level
+                if "ply" in self.level:
+                    self.game_screen = "valid level"
+                    self.ResetPortal()
+                else:
+                    pass
             elif self.editor_lav_button.IsPressed():
                 self.selected = "lav"
             elif self.editor_res_button.IsPressed():
@@ -707,7 +795,7 @@ class Game():
     def SetTime(self, default_time):
         minute = default_time // 60
         seconde = default_time % 60
-        return "Time: " + str(minute) + " min " + str(seconde) + " sec"
+        return "Time: " + str(minute) + " m " + str(seconde) + " s"
 
     def CollideForOneWay(self, direction, index):
         if direction == "up" and index == "owd":
@@ -734,7 +822,7 @@ class Game():
 
     def DelBlock(self):
         mouse_pos_x, mouse_pos_y = pygame.mouse.get_pos()
-        level_rect = pygame.Rect(40, 120, (40*16), (40*28))
+        level_rect = pygame.Rect(40, 120, (40*28), (40*16))
         if level_rect.collidepoint(mouse_pos_x, mouse_pos_y):
             tile_x = mouse_pos_x // 40
             tile_y = (mouse_pos_y // 40) - 2
@@ -743,7 +831,6 @@ class Game():
     def SetPlayerPos(self):
         if "ply" in self.level:
             index = self.level.index("ply")
-            print(index)
             self.player_position_x = index % self.lvl_width
             self.player_position_y = index // self.lvl_width
 
