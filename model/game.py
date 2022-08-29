@@ -1,5 +1,4 @@
 #import pygame
-from ast import Continue
 import pygame
 from model.button import Button
 from model.display_text import DisplayText
@@ -309,24 +308,90 @@ class Game():
                           (tile_x + 10, tile_y + 38), (tile_x + 1, tile_y + 38), (tile_x + 1, tile_y + 30)]
             mld_points = [(tile_x + 1, tile_y + 1), (tile_x + 10, tile_y + 1), (tile_x + 38, tile_y + 29),
                           (tile_x + 38, tile_y + 38), (tile_x + 29, tile_y + 38), (tile_x + 1, tile_y + 10)]
+
+            owu_points = [(tile_x + 19, tile_y + 11), (tile_x + 20, tile_y + 11), (tile_x + 30, tile_y + 21),
+                          (tile_x + 25, tile_y + 21), (tile_x + 25, tile_y + 31), (tile_x + 14, tile_y + 31),
+                          (tile_x + 14, tile_y + 21), (tile_x + 9, tile_y + 21)]
+            owd_points = [(tile_x + 20, tile_y + 28), (tile_x + 19, tile_y + 28), (tile_x + 9, tile_y + 18),
+                          (tile_x + 14, tile_y + 18), (tile_x + 14, tile_y + 8), (tile_x + 25, tile_y + 8),
+                          (tile_x + 25, tile_y + 18), (tile_x + 30, tile_y + 18)]
+            owr_points = [(tile_x + 28, tile_y + 19), (tile_x + 28, tile_y + 20), (tile_x + 18, tile_y + 30),
+                          (tile_x + 18, tile_y + 25), (tile_x + 8, tile_y + 25), (tile_x + 8, tile_y + 14),
+                          (tile_x + 18, tile_y + 14), (tile_x + 18, tile_y + 9)]
+            owl_points = [(tile_x + 11, tile_y + 19), (tile_x + 11, tile_y + 20), (tile_x + 21, tile_y + 30),
+                          (tile_x + 21, tile_y + 25), (tile_x + 31, tile_y + 25), (tile_x + 31, tile_y + 14),
+                          (tile_x + 21, tile_y + 14), (tile_x + 21, tile_y + 9)]
             if self.level[i] == "mur":
-                pygame.draw.rect(self.screen, (120, 120, 120), tile_rect)
+                pygame.draw.rect(self.screen, (100, 100, 100), tile_rect)
+
             elif self.level[i] == "air":
+                pygame.draw.rect(self.screen, (180, 180, 180), tile_rect)
+                tile_rect = pygame.Rect(tile_x + 2, tile_y + 2, self.tile_width - 4, self.tile_height - 4)
                 pygame.draw.rect(self.screen, (220, 220, 220), tile_rect)
+
             elif self.level[i] == "ply":
+                pygame.draw.rect(self.screen, (180, 180, 180), tile_rect)
+                tile_rect = pygame.Rect(tile_x + 2, tile_y + 2, self.tile_width - 4, self.tile_height - 4)
                 pygame.draw.rect(self.screen, (220, 220, 220), tile_rect)
+
             elif self.level[i] == "fin":
+                pygame.draw.rect(self.screen, (180, 180, 180), tile_rect)
+                tile_rect = pygame.Rect(tile_x + 2, tile_y + 2, self.tile_width - 4, self.tile_height - 4)
                 pygame.draw.rect(self.screen, (220, 220, 0), tile_rect)
+
             elif self.level[i] == "lav":
                 pygame.draw.rect(self.screen, (255, 77, 0), tile_rect)
+
             elif self.level[i] == "res":
+                pygame.draw.rect(self.screen, (73, 163, 194), tile_rect)
+                tile_rect = pygame.Rect(tile_x + 2, tile_y + 2, self.tile_width - 4, self.tile_height - 4)
                 pygame.draw.rect(self.screen, (95, 191, 224), tile_rect)
+
             elif self.level[i] == "mlu":
+                pygame.draw.rect(self.screen, (180, 180, 180), tile_rect)
+                tile_rect = pygame.Rect(tile_x + 2, tile_y + 2, self.tile_width - 4, self.tile_height - 4)
+                pygame.draw.rect(self.screen, (220, 220, 220), tile_rect)
                 pygame.draw.lines(self.screen, (0, 0, 0), 1, mlu_points, 3)
                 pygame.draw.line(self.screen, (0, 0, 0), (tile_x , tile_y + 39), (tile_x + 39, tile_y), 2)
+
             elif self.level[i] == "mld":
+                pygame.draw.rect(self.screen, (180, 180, 180), tile_rect)
+                tile_rect = pygame.Rect(tile_x + 2, tile_y + 2, self.tile_width - 4, self.tile_height - 4)
+                pygame.draw.rect(self.screen, (220, 220, 220), tile_rect)
                 pygame.draw.lines(self.screen, (0, 0, 0), 1, mld_points, 3)
                 pygame.draw.line(self.screen, (0, 0, 0), (tile_x, tile_y), (tile_x + 39, tile_y + 39), 2)
+            
+            elif self.level[i] == "owu":
+                pygame.draw.rect(self.screen, (180, 180, 180), tile_rect)
+                tile_rect = pygame.Rect(tile_x + 2, tile_y + 2, self.tile_width - 4, self.tile_height - 4)
+                pygame.draw.rect(self.screen, (200, 200, 200), tile_rect)
+                tile_rect = pygame.Rect(tile_x + 2, tile_y + 2, self.tile_width - 4, self.tile_height - 34)
+                pygame.draw.rect(self.screen, (160, 160, 160), tile_rect)
+                pygame.draw.lines(self.screen, (250, 54, 31), 1, owu_points, 3)
+
+            elif self.level[i] == "owd":
+                pygame.draw.rect(self.screen, (180, 180, 180), tile_rect)
+                tile_rect = pygame.Rect(tile_x + 2, tile_y + 2, self.tile_width - 4, self.tile_height - 4)
+                pygame.draw.rect(self.screen, (200, 200, 200), tile_rect)
+                tile_rect = pygame.Rect(tile_x + 2, tile_y + 32, self.tile_width - 4, self.tile_height - 34)
+                pygame.draw.rect(self.screen, (160, 160, 160), tile_rect)
+                pygame.draw.lines(self.screen, (250, 54, 31), 1, owd_points, 3)
+
+            elif self.level[i] == "owl":
+                pygame.draw.rect(self.screen, (180, 180, 180), tile_rect)
+                tile_rect = pygame.Rect(tile_x + 2, tile_y + 2, self.tile_width - 4, self.tile_height - 4)
+                pygame.draw.rect(self.screen, (200, 200, 200), tile_rect)
+                tile_rect = pygame.Rect(tile_x + 2, tile_y + 2, self.tile_width - 34, self.tile_height - 4)
+                pygame.draw.rect(self.screen, (160, 160, 160), tile_rect)
+                pygame.draw.lines(self.screen, (250, 54, 31), 1, owl_points, 3)
+
+            elif self.level[i] == "owr":
+                pygame.draw.rect(self.screen, (180, 180, 180), tile_rect)
+                tile_rect = pygame.Rect(tile_x + 2, tile_y + 2, self.tile_width - 4, self.tile_height - 4)
+                pygame.draw.rect(self.screen, (200, 200, 200), tile_rect)
+                tile_rect = pygame.Rect(tile_x + 32, tile_y + 2, self.tile_width - 34, self.tile_height - 4)
+                pygame.draw.rect(self.screen, (160, 160, 160), tile_rect)
+                pygame.draw.lines(self.screen, (250, 54, 31), 1, owr_points, 3)
 
     def DrawPlayer(self):
         player_rect = pygame.Rect(self.player_position_x * self.tile_width, (self.player_position_y * self.tile_height) + 80, self.tile_width, self.tile_height)
@@ -395,11 +460,30 @@ class Game():
         elif direction == "right":
             return "left"
     
+    def CheckIfPortaillable(self, x, y, direction):
+        level_index = (y * self.lvl_width) + x
+        if direction == "up":
+            level_index -= self.lvl_width
+        if direction == "down":
+            level_index += self.lvl_width
+        if direction == "left":
+            level_index -= 1
+        if direction == "right":
+            level_index += 1
+        print(level_index)
+        if self.level[level_index] == "air" or level_index == "fin":
+            return True
+        else:
+            return False
+
     def SendPortal(self, portal_color):
 
         mouse_direction = self.FindMouseDirection()
         x, y, portal_direction = self.SearchWall(mouse_direction)
-        if x == 0 and y == 0 and portal_direction == 0:
+        if not self.CheckIfPortaillable(x, y, portal_direction):
+            pass
+
+        elif x == 0 and y == 0 and portal_direction == 0:
             pass
 
         elif portal_color == "orange":
@@ -518,5 +602,3 @@ class Game():
         self.portal_orange = [0, 0, 0]
         self.portal_blue = [0, 0, 0]
     
-
-
