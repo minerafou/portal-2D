@@ -319,6 +319,9 @@ class Game():
         if "ply" in self.level:
             self.DrawPlayer()
 
+        #draw selected tile
+        self.DrawSelectedTile()
+
     def UpdatePlayHelp(self):
         #draw button
         self.level_selection_back_button.DrawButton(self.screen)
@@ -834,3 +837,20 @@ class Game():
             self.player_position_x = index % self.lvl_width
             self.player_position_y = index // self.lvl_width
 
+    def DrawSelectedTile(self):
+        mouse_pos_x, mouse_pos_y = pygame.mouse.get_pos()
+        level_rect = pygame.Rect(40, 120, (40*28), (40*16))
+        print("1")
+        
+        if level_rect.collidepoint(mouse_pos_x, mouse_pos_y):
+            tile_x = mouse_pos_x // 40
+            tile_y = (mouse_pos_y // 40)
+            rect1 = (tile_x * 40, tile_y * 40, 40, 2)
+            rect2 = (tile_x * 40, tile_y * 40, 2, 40)
+            rect3 = (tile_x * 40, (tile_y * 40) + 38, 40, 2)
+            rect4 = ((tile_x * 40) + 38, tile_y * 40, 2, 40)
+            pygame.draw.rect(self.screen, (20, 20, 20), rect1)
+            pygame.draw.rect(self.screen, (20, 20, 20), rect2)
+            pygame.draw.rect(self.screen, (20, 20, 20), rect3)
+            pygame.draw.rect(self.screen, (20, 20, 20), rect4)
+            print("2")
