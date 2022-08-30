@@ -48,6 +48,13 @@ class Game():
         self.level_selection_12 = Button(700, 350, 100, 100, (180, 180, 180), (150, 150, 150), "12", (0, 0, 0), 40)
         self.level_selection_13 = Button(850, 350, 100, 100, (180, 180, 180), (150, 150, 150), "13", (0, 0, 0), 40)
         self.level_selection_14 = Button(1000, 350, 100, 100, (180, 180, 180), (150, 150, 150), "14", (0, 0, 0), 40)
+        self.level_selection_15 = Button(100, 500, 100, 100, (180, 180, 180), (150, 150, 150), "15", (0, 0, 0), 40)
+        self.level_selection_16 = Button(250, 500, 100, 100, (180, 180, 180), (150, 150, 150), "16", (0, 0, 0), 40)
+        self.level_selection_17 = Button(400, 500, 100, 100, (180, 180, 180), (150, 150, 150), "17", (0, 0, 0), 40)
+        self.level_selection_18 = Button(550, 500, 100, 100, (180, 180, 180), (150, 150, 150), "18", (0, 0, 0), 40)
+        self.level_selection_19 = Button(700, 500, 100, 100, (180, 180, 180), (150, 150, 150), "19", (0, 0, 0), 40)
+        self.level_selection_20 = Button(850, 500, 100, 100, (180, 180, 180), (150, 150, 150), "20", (0, 0, 0), 40)
+        self.level_selection_21 = Button(1000, 500, 100, 100, (180, 180, 180), (150, 150, 150), "21", (0, 0, 0), 40)
 
         #text playing scene
         self.playing_scene_level = DisplayText(230, 10, (0, 0, 0), "None (le text et modif apres)", 50)
@@ -97,6 +104,8 @@ class Game():
         self.counter = 0
         self.seconde = 0
         self.selected = "air"
+        self.portal_trail = []
+        self.trail_counter = 0
 
         #running variable
         self.running = True
@@ -111,7 +120,14 @@ class Game():
         self.level_number = level_num
         self.ResetPortal()
         self.ResetSeconde()
-        new_level = GetLevel(level_num)
+        new_level = None
+        while new_level == None:
+            new_level = GetLevel(level_num)
+            if new_level == None:
+                level_num += 1
+                if level_num == 21:
+                    level_num = 1
+                self.level_number = level_num
         player_index = new_level.index("ply")
         self.player_position_x = player_index % self.lvl_width
         self.player_position_y = player_index // self.lvl_width
@@ -132,6 +148,10 @@ class Game():
 
         #check res portal
         if self.game_screen == "playing scene":
+            if self.level[self.player_position_x + (self.player_position_y * self.lvl_width)] == "res":
+                self.ResetPortal()
+            
+        if self.game_screen == "valid level":
             if self.level[self.player_position_x + (self.player_position_y * self.lvl_width)] == "res":
                 self.ResetPortal()
 
@@ -223,6 +243,8 @@ class Game():
             self.Refresh()
 
     def EveryTenMilliSecAction(self):
+        if self.trail_counter != 0:
+            self.trail_counter -= 1
         self.counter += 1
         if self.counter == 100:
             self.counter = 0
@@ -258,6 +280,9 @@ class Game():
 
         #draw portals
         self.DrawPortals()
+
+        #draw portals trail
+        self.DrawPortalsTrail()
     
     def UpdateLevelSelection(self):
         #draw button
@@ -277,6 +302,13 @@ class Game():
         self.level_selection_12.DrawButton(self.screen)
         self.level_selection_13.DrawButton(self.screen)
         self.level_selection_14.DrawButton(self.screen)
+        self.level_selection_15.DrawButton(self.screen)
+        self.level_selection_16.DrawButton(self.screen)
+        self.level_selection_17.DrawButton(self.screen)
+        self.level_selection_18.DrawButton(self.screen)
+        self.level_selection_19.DrawButton(self.screen)
+        self.level_selection_20.DrawButton(self.screen)
+        self.level_selection_21.DrawButton(self.screen)
 
         #draw text
         self.level_selection_text.DrawText(self.screen)
@@ -346,6 +378,9 @@ class Game():
 
         #draw portals
         self.DrawPortals()
+
+        #draw portals trail
+        self.DrawPortalsTrail()
 
     def UpdateValidScreen(self):
         #draw button
@@ -484,6 +519,27 @@ class Game():
                 self.game_screen = "playing scene"
             elif self.level_selection_14.IsPressed():
                 self.level = self.SetLevel(14)
+                self.game_screen = "playing scene"
+            elif self.level_selection_15.IsPressed():
+                self.level = self.SetLevel(15)
+                self.game_screen = "playing scene"
+            elif self.level_selection_16.IsPressed():
+                self.level = self.SetLevel(16)
+                self.game_screen = "playing scene"
+            elif self.level_selection_17.IsPressed():
+                self.level = self.SetLevel(17)
+                self.game_screen = "playing scene"
+            elif self.level_selection_18.IsPressed():
+                self.level = self.SetLevel(18)
+                self.game_screen = "playing scene"
+            elif self.level_selection_19.IsPressed():
+                self.level = self.SetLevel(19)
+                self.game_screen = "playing scene"
+            elif self.level_selection_20.IsPressed():
+                self.level = self.SetLevel(20)
+                self.game_screen = "playing scene"
+            elif self.level_selection_21.IsPressed():
+                self.level = self.SetLevel(21)
                 self.game_screen = "playing scene"
          
     def DrawLevel(self):
@@ -668,6 +724,11 @@ class Game():
 
         mouse_direction = self.FindMouseDirection()
         x, y, portal_direction = self.SearchWall(mouse_direction)
+
+        self.trail_counter = 25
+
+        self.portal_trail.append(portal_color)
+
         if not self.CheckIfPortaillable(x, y, portal_direction):
             pass
 
@@ -682,6 +743,7 @@ class Game():
                 self.portal_blue = [x, y, portal_direction]
 
     def SearchWall(self, direction):
+        self.portal_trail = []
         test_x = self.player_position_x
         test_y = self.player_position_y
         while self.level[test_x + test_y * self.lvl_width] == "air" or self.level[test_x + test_y * self.lvl_width] == "lav" or self.level[test_x + test_y * self.lvl_width] == "ply" or self.level[test_x + test_y * self.lvl_width] == "fin"or self.level[test_x + test_y * self.lvl_width] == "mlu" or self.level[test_x + test_y * self.lvl_width] == "mld" or self.level[test_x + test_y * self.lvl_width] == "owu" or self.level[test_x + test_y * self.lvl_width] == "owd" or self.level[test_x + test_y * self.lvl_width] == "owr" or self.level[test_x + test_y * self.lvl_width] == "owl":
@@ -694,8 +756,18 @@ class Game():
             if direction == "right":
                 test_x += 1
             if self.level[test_x + test_y * self.lvl_width] == "res":
+                if direction == "up" or direction == "down":
+                    self.portal_trail.append(((test_x * 40) + 10, (test_y * 40) + 80, self.tile_width - 20, self.tile_height))
+                if direction == "left" or direction == "right":
+                    self.portal_trail.append((test_x * 40, (test_y * 40) + 90, self.tile_width, self.tile_height - 20))
+
                 return 0, 0, 0
             if not self.CollideForOneWay(direction, self.level[test_x + test_y * self.lvl_width]):
+                if direction == "up" or direction == "down":
+                    self.portal_trail.append(((test_x * 40) + 10, (test_y * 40) + 80, self.tile_width - 20, self.tile_height))
+                if direction == "left" or direction == "right":
+                    self.portal_trail.append((test_x * 40, (test_y * 40) + 90, self.tile_width, self.tile_height - 20))
+
                 return 0, 0, 0
             if self.level[test_x + test_y * self.lvl_width] == "mld":
                 if direction == "up":
@@ -715,6 +787,11 @@ class Game():
                     direction = "down"
                 elif direction == "right":
                     direction = "up"
+
+            if direction == "up" or direction == "down":
+                self.portal_trail.append(((test_x * 40) + 10, (test_y * 40) + 80, self.tile_width - 20, self.tile_height))
+            if direction == "left" or direction == "right":
+                self.portal_trail.append((test_x * 40, (test_y * 40) + 90, self.tile_width, self.tile_height - 20))
 
         portal_direction = self.InvertDir(direction)
 
@@ -838,9 +915,9 @@ class Game():
             self.player_position_y = index // self.lvl_width
 
     def DrawSelectedTile(self):
+
         mouse_pos_x, mouse_pos_y = pygame.mouse.get_pos()
         level_rect = pygame.Rect(40, 120, (40*28), (40*16))
-        print("1")
         
         if level_rect.collidepoint(mouse_pos_x, mouse_pos_y):
             tile_x = mouse_pos_x // 40
@@ -853,4 +930,20 @@ class Game():
             pygame.draw.rect(self.screen, (20, 20, 20), rect2)
             pygame.draw.rect(self.screen, (20, 20, 20), rect3)
             pygame.draw.rect(self.screen, (20, 20, 20), rect4)
-            print("2")
+
+    def DrawPortalsTrail(self):
+        if len(self.portal_trail) == 0 or self.trail_counter == 0:
+            pass
+        else:
+            if self.portal_trail[len(self.portal_trail) - 1] == "blue":
+
+                color = (32, 111, 247)
+
+            elif self.portal_trail[len(self.portal_trail) - 1] == "orange":
+
+                color = (235, 132, 29)
+
+            for i in range(len(self.portal_trail) - 2):
+                pygame.draw.rect(self.screen, color, self.portal_trail[i])
+
+
