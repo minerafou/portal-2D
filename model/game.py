@@ -85,7 +85,8 @@ class Game():
         self.editor_owl_button = ButtonEditor(640, 20, 40, 40, "owl")
         self.editor_owr_button = ButtonEditor(700, 20, 40, 40, "owr")
         self.editor_fin_button = ButtonEditor(760, 20, 40, 40, "fin")
-        self.editor_ply_button = ButtonEditor(820, 20, 40, 40, "ply")
+        self.editor_ply_button = ButtonEditor(880, 20, 40, 40, "ply")
+        self.editor_upw_button = ButtonEditor(820, 20, 40, 40, "upw")
 
         #vadil level text
         self.valid_level_text = DisplayText(220, 18, (0, 0, 0), "Please finish you're level", 40)
@@ -125,7 +126,7 @@ class Game():
             new_level = GetLevel(level_num)
             if new_level == None:
                 level_num += 1
-                if level_num == 21:
+                if level_num == 22:
                     level_num = 1
                 self.level_number = level_num
         player_index = new_level.index("ply")
@@ -186,6 +187,11 @@ class Game():
                         self.SendPortal("orange")
                     elif self.game_screen == "editor":
                         self.DelBlock()
+                
+                elif event.button == 2:
+                    #middle
+                    if self.game_screen == "editor":
+                        self.PickBlock()
 
             #check input clavier
             if self.game_screen == "playing scene" or self.game_screen == "valid level":
@@ -337,6 +343,7 @@ class Game():
         self.editor_owr_button.DrawButton(self.screen)
         self.editor_fin_button.DrawButton(self.screen)
         self.editor_ply_button.DrawButton(self.screen)
+        self.editor_upw_button.DrawButton(self.screen)
 
         self.editor_playing_scene_help.DrawButton(self.screen)
         self.editor_play.DrawButton(self.screen)
@@ -471,7 +478,8 @@ class Game():
                 self.selected = "mur"
             elif self.editor_ply_button.IsPressed():
                 self.selected = "ply"
-
+            elif self.editor_upw_button.IsPressed():
+                self.selected = "upw"
 
         #for level selection
         elif self.game_screen == "level selection":
@@ -566,6 +574,9 @@ class Game():
                           (tile_x + 21, tile_y + 14), (tile_x + 21, tile_y + 9)]
             if self.level[i] == "mur":
                 pygame.draw.rect(self.screen, (100, 100, 100), tile_rect)
+            
+            if self.level[i] == "upw":
+                pygame.draw.rect(self.screen, (40, 40, 40), tile_rect)
 
             elif self.level[i] == "air":
                 pygame.draw.rect(self.screen, (180, 180, 180), tile_rect)
@@ -692,6 +703,8 @@ class Game():
             return False
         elif self.level[test_x + (test_y * self.lvl_width)] == "mld":
             return False
+        elif self.level[test_x + (test_y * self.lvl_width)] == "upw":
+            return False
         else:
             return True
 
@@ -756,6 +769,13 @@ class Game():
             if direction == "right":
                 test_x += 1
             if self.level[test_x + test_y * self.lvl_width] == "res":
+                if direction == "up" or direction == "down":
+                    self.portal_trail.append(((test_x * 40) + 10, (test_y * 40) + 80, self.tile_width - 20, self.tile_height))
+                if direction == "left" or direction == "right":
+                    self.portal_trail.append((test_x * 40, (test_y * 40) + 90, self.tile_width, self.tile_height - 20))
+                return 0, 0, 0
+                
+            if self.level[test_x + test_y * self.lvl_width] == "upw":
                 if direction == "up" or direction == "down":
                     self.portal_trail.append(((test_x * 40) + 10, (test_y * 40) + 80, self.tile_width - 20, self.tile_height))
                 if direction == "left" or direction == "right":
@@ -945,5 +965,15 @@ class Game():
 
             for i in range(len(self.portal_trail) - 2):
                 pygame.draw.rect(self.screen, color, self.portal_trail[i])
+
+    def PickBlock(self):
+        mouse_pos_x, mouse_pos_y = pygame.mouse.get_pos()
+        level_rect = pygame.Rect(40, 120, (40*28), (40*16))
+        
+        if level_rect.collidepoint(mouse_pos_x, mouse_pos_y):
+            tile_x = mouse_pos_x // 40
+            tile_y = (mouse_pos_y // 40) - 2
+            self.selected = self.level[tile_x + (tile_y * self.lvl_width)]
+
 
 

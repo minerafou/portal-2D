@@ -76,12 +76,15 @@ class ButtonEditor():
                           (tile_x + 21, tile_y + 14), (tile_x + 21, tile_y + 9)]
         if self.block == "mur":
             pygame.draw.rect(self.screen, (100, 100, 100), tile_rect)
+        
+        if self.block == "upw":
+            pygame.draw.rect(self.screen, (40, 40, 40), tile_rect)
 
         elif self.block == "air":
             pygame.draw.rect(self.screen, (180, 180, 180), tile_rect)
             tile_rect = pygame.Rect(tile_x + 2, tile_y + 2, self.tile_width - 4, self.tile_height - 4)
             pygame.draw.rect(self.screen, (220, 220, 220), tile_rect)
-            
+
         elif self.block == "fin":
             pygame.draw.rect(self.screen, (180, 180, 180), tile_rect)
             tile_rect = pygame.Rect(tile_x + 2, tile_y + 2, self.tile_width - 4, self.tile_height - 4)
