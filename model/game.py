@@ -21,8 +21,8 @@ class Game():
         #button menu
         self.menu_play_button = Button(150, 250, 900, 150, (180, 180, 180), (150, 150, 150), "Play", (0, 0, 0), 70)
         self.menu_editor_button = Button(150, 425, 900, 150, (180, 180, 180), (150, 150, 150), "Level Editor", (0, 0, 0), 70)
-        self.menu_options_button = Button(150, 600, 425, 150, (180, 180, 180), (150, 150, 150), "Options", (0, 0, 0), 70)
-        self.menu_quit_button = Button(625, 600, 425, 150, (180, 180, 180), (150, 150, 150), "Quit", (0, 0, 0), 70)
+        self.menu_options_button = Button(150, 600, 437, 150, (180, 180, 180), (150, 150, 150), "Options", (0, 0, 0), 70)
+        self.menu_quit_button = Button(613, 600, 437, 150, (180, 180, 180), (150, 150, 150), "Quit", (0, 0, 0), 70)
 
         #text menu
         self.menu_game_name = DisplayText(120, 20, (32, 111, 247), "PORTAL", 150)
@@ -85,8 +85,8 @@ class Game():
         self.editor_owl_button = ButtonEditor(640, 20, 40, 40, "owl")
         self.editor_owr_button = ButtonEditor(700, 20, 40, 40, "owr")
         self.editor_fin_button = ButtonEditor(760, 20, 40, 40, "fin")
-        self.editor_ply_button = ButtonEditor(880, 20, 40, 40, "ply")
         self.editor_upw_button = ButtonEditor(820, 20, 40, 40, "upw")
+        self.editor_ply_button = ButtonEditor(880, 20, 40, 40, "ply")
 
         #vadil level text
         self.valid_level_text = DisplayText(220, 18, (0, 0, 0), "Please finish you're level", 40)
@@ -695,15 +695,7 @@ class Game():
                 return False
         elif not self.CollideForOneWay(direction, self.level[test_x + (test_y * self.lvl_width)]):
             return False
-        elif self.level[test_x + (test_y * self.lvl_width)] == "mur":
-            return False
-        elif self.level[test_x + (test_y * self.lvl_width)] == "lav":
-            return False
-        elif self.level[test_x + (test_y * self.lvl_width)] == "mlu":
-            return False
-        elif self.level[test_x + (test_y * self.lvl_width)] == "mld":
-            return False
-        elif self.level[test_x + (test_y * self.lvl_width)] == "upw":
+        elif self.level[test_x + (test_y * self.lvl_width)] in ("mur", "lav", "mlu", "mld", "upw"):
             return False
         else:
             return True
